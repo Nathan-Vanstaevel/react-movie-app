@@ -3,11 +3,7 @@ import './App.css';
 import './Form';
 
 function App() {
-  return (
-    <div className='Form'>
-      <Form />
-    </div>
-  );
+  return <Form />;
 }
 
 export default App;

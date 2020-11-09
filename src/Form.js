@@ -9,73 +9,74 @@ class Form extends Component {
       poster: '',
       comment: '',
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onchange(e) {
-    this.setState({ [e.target.title]: e.target.value });
-    this.setState({ [e.target.poster]: e.target.value });
-    this.setState({ [e.target.comment]: e.target.value });
-  }
+  onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  onSubmit(e) {
+  submitForm = (e) => {
     e.preventDefault();
+    console.log(this.state);
     const url = 'https://post-a-form.herokuapp.com/api/movies/';
     axios
       .post(url, this.state)
       .then((res) => res.data)
       .then((res) => {
-        alert(`The movie ${res.title} has been saved !`);
+        alert(`Film ajouté avec l'ID ${res.id} !`);
       })
       .catch((e) => {
         console.error(e);
-        alert(`Erreur lors de l'ajout de votre commentaire : ${e.message}`);
+        alert(`Erreur lors de l'ajout du film : ${e.message}`);
       });
-  }
+  };
 
   render() {
     return (
-      <div className='CommentMovie'>
-        <h1>Comment your movie</h1>
+      <div className='FormMovie'>
+        <h1>Write a comment</h1>
 
         <form onSubmit={this.submitForm}>
           <fieldset>
-            <legend>title</legend>
-            <div className='movie-title'>
-              <label htmlFor='title'>Title</label>
+            <legend>Informations</legend>
+            <div className='form-data'>
+              <label htmlFor='movie-name'>Movie </label>
               <input
                 type='text'
-                id='title'
+                id='movieName'
                 name='title'
                 onChange={this.onChange}
-                value={this.state.title}
+                value={this.state.movieName}
+                required
               />
             </div>
 
-            <div className='movie-poster'>
-              <label htmlFor='poster'>poster</label>
+            <div className='form-data'>
+              <label htmlFor='imageUrl'>Poster :</label>
               <input
-                type='text'
-                id='poster'
+                type='url'
+                id='imageUrl'
                 name='poster'
                 onChange={this.onChange}
-                value={this.state.poster}
+                value={this.state.imageUrl}
+                required
               />
             </div>
 
-            <div className='movie-comment'>
-              <label htmlFor='comment'>Comment</label>
-              <input
-                type='textarea'
-                id='comment'
+            <div className='form-data'>
+              <label htmlFor='movieReview'>Review :</label>
+              <textarea
+                id='movieReview'
                 name='comment'
                 onChange={this.onChange}
-                value={this.state.comment}
+                value={this.state.movieReview}
+                required
               />
             </div>
             <hr />
-            <div className='comment-movie'>
+            <div className='form-data'>
               <input type='submit' value='Envoyer' />
             </div>
           </fieldset>
